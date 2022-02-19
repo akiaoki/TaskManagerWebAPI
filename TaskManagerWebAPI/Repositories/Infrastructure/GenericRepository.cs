@@ -33,9 +33,9 @@ namespace TaskManagerWebAPI.Repositories.Infrastructure
             return await _dbSet.FindAsync(id);
         }
 
-        public virtual async Task Update(T entity)
+        public virtual async Task<T?> Update(T entity)
         {
-            _dbSet.Update(entity);
+            return _dbSet.Update(entity).Entity;
         }
 
         public virtual async Task<int> Save()

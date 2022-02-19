@@ -7,7 +7,7 @@
 
         public Task<T?> Get(Guid id);
 
-        public Task Update(T entity);
+        public Task<T?> Update(T entity);
 
         public Task<T?> Delete(Guid id);
 

@@ -17,11 +17,11 @@ namespace TaskManagerWebAPI.Services
             _projectRepository = projectRepository;
         }
 
-        public async Task<Models.ProjectResponse> Create(Models.CreateProjectRequest projectRequest)
+        public async Task<Models.IndexedProjectResponse> Create(Models.CreateProjectRequest projectRequest)
         {
             var createdProject = await _projectRepository.Create(
                 _mapper.Map<Entities.Project>(projectRequest));
-            return _mapper.Map<Models.ProjectResponse>(createdProject);
+            return _mapper.Map<Models.IndexedProjectResponse>(createdProject);
         }
 
         public async Task<ProjectResponse?> Get(Guid projectId)
@@ -32,12 +32,22 @@ namespace TaskManagerWebAPI.Services
             return _mapper.Map<Models.ProjectResponse>(foundProject);
         }
 
-        public async Task<ProjectResponse?> Update(Guid projectId, CreateProjectRequest projectRequest)
+        public async Task<ProjectResponse?> Update(Guid projectId, UpdateProjectRequest projectRequest)
         {
             var foundProject = await _projectRepository.Get(projectId);
             if (foundProject == null)
                 return null;
-            _projectRepository.Update()
+            var response =  await _projectRepository.Update(_mapper.Map<Entities.Project>(projectRequest));
+            return _mapper.Map<Models.ProjectResponse>(response);
+        }
+
+        public async Task<ProjectResponse?> Delete(Guid projectId)
+        {
+            var foundProject = await _projectRepository.Get(projectId);
+            if (foundProject == null)
+                return null;
+            var response = await _projectRepository.Delete(projectId);
+            return _mapper.Map<Models.ProjectResponse>(response);
         }
 
         public async Task<int> SaveChanges()

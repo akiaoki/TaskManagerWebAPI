@@ -15,7 +15,7 @@ namespace TaskManagerWebAPI.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(Models.ProjectResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(Models.IndexedProjectResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Create([FromBody] Models.CreateProjectRequest createProjectRequest)
         {
@@ -36,7 +36,7 @@ namespace TaskManagerWebAPI.Controllers
             var response = await _projectService.Get(projectId);
             if (response == null)
             {
-                return NotFound($"Project with id={projectId} was not found");
+                return ProjectNotFound(projectId);
             }
             return Ok(response);
         }
@@ -45,13 +45,44 @@ namespace TaskManagerWebAPI.Controllers
         [ProducesResponseType(typeof(Models.ProjectResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Update(Guid projectId, [FromBody] Models.CreateProjectRequest updateProjectRequest)
+        public async Task<ActionResult> Update(Guid projectId, [FromBody] Models.UpdateProjectRequest updateProjectRequest)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
+            if (projectId != updateProjectRequest.Id)
+            {
+                return BadRequest($"Route projectId was different ({projectId}) from the stated one in the request body ({updateProjectRequest.Id})");
+            }
+
+            var response = await _projectService.Update(projectId, updateProjectRequest);
+            await _projectService.SaveChanges();
+
+            if (response == null)
+            {
+                return ProjectNotFound(projectId);
+            }
+
+            return Ok(response);
         }
+
+        [HttpDelete("{projectId}")]
+        [ProducesResponseType(typeof(Models.ProjectResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> Delete(Guid projectId)
+        {
+            var response = await _projectService.Delete(projectId);
+
+            if (response == null)
+            {
+                return ProjectNotFound(projectId);
+            }
+
+            return Ok(response);
+        }
+
+        private NotFoundObjectResult ProjectNotFound(Guid projectId) => NotFound($"Project with id={projectId} was not found");
     }
 }
