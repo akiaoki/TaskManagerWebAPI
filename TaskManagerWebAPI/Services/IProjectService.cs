@@ -3,10 +3,13 @@
     public interface IProjectService
     {
 
-        public Task<Models.ProjectResponse> CreateProject(Models.CreateProjectRequest projectRequest);
+        public Task<Models.ProjectResponse> Create(Models.CreateProjectRequest projectRequest);
 
-        // throws
-        public Task<int> SaveProjectChanges();
+        public Task<Models.ProjectResponse?> Get(Guid projectId);
+
+        public Task<Models.ProjectResponse?> Update(Guid projectId, Models.CreateProjectRequest projectRequest);
+
+        public Task<int> SaveChanges();
 
     }
 }
