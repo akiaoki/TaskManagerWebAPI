@@ -3,20 +3,21 @@ using TaskManagerWebAPI.Services;
 
 namespace TaskManagerWebAPI.Controllers
 {
+    /// <summary>
+    /// A controller for managing <see cref="IProjectService"/> models
+    /// </summary>
     [Route("api/v1/[controller]")]
     [ApiController]
     public class ProjectController : ControllerBase
     {
         private IProjectService _projectService;
-        private ITaskService _taskService;
 
         /// <summary>
         /// Controller constructor
         /// </summary>
-        public ProjectController(IProjectService projectService, ITaskService taskService)
+        public ProjectController(IProjectService projectService)
         {
             _projectService = projectService;
-            _taskService = taskService;
         }
 
         /// <summary>
@@ -41,6 +42,14 @@ namespace TaskManagerWebAPI.Controllers
             return Created("api/v1/Project/" + response.Id, response);
         }
 
+        /// <summary>
+        /// Gets a project by id.
+        /// </summary>
+        /// <param name="projectId"><see cref="Guid"/> specifying the project to be found.</param>
+        /// <returns>
+        /// If <see cref="StatusCodes.Status200OK"/>, returns a found <see cref="Models.ProjectResponse"/>.<para/>
+        /// If <see cref="StatusCodes.Status404NotFound"/>, returns an error with projectId that was not found.
+        /// </returns>
         [HttpGet("{projectId}")]
         [ProducesResponseType(typeof(Models.ProjectResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -54,6 +63,17 @@ namespace TaskManagerWebAPI.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Updates a project by id with the specified <see cref="Models.UpdateProjectRequest"/>
+        /// </summary>
+        /// <param name="projectId"><see cref="Guid"/> specifying the project to be updated.</param>
+        /// <param name="updateProjectRequest"><see cref="Models.UpdateProjectRequest"/> with data that should be applied.</param>
+        /// <remarks>Note that <see cref="Models.UpdateProjectRequest"/> should have the same projectId as stated in the request.</remarks>
+        /// <returns>
+        /// If <see cref="StatusCodes.Status200OK"/>, returns an updated <see cref="Models.ProjectResponse"/>.<para/>
+        /// If <see cref="StatusCodes.Status400BadRequest"/>, returns an object specifying errors in the request.<para/>
+        /// If <see cref="StatusCodes.Status404NotFound"/>, returns an error with projectId that was not found.
+        /// </returns>
         [HttpPut("{projectId}")]
         [ProducesResponseType(typeof(Models.ProjectResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -81,6 +101,16 @@ namespace TaskManagerWebAPI.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Deletes a project by id.
+        /// </summary>
+        /// <param name="projectId"><see cref="Guid"/> specifying the project to be deleted.</param>
+        /// <remarks>Note that the specified project should have no referenced tasks.</remarks>
+        /// <returns>
+        /// If <see cref="StatusCodes.Status200OK"/>, returns a deleted <see cref="Models.ProjectResponse"/>.<para/>
+        /// If <see cref="StatusCodes.Status400BadRequest"/>, returns an object specifying errors in the request.<para/>
+        /// If <see cref="StatusCodes.Status404NotFound"/>, returns an error with projectId that was not found.
+        /// </returns>
         [HttpDelete("{projectId}")]
         [ProducesResponseType(typeof(Models.ProjectResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -108,6 +138,12 @@ namespace TaskManagerWebAPI.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Gets all existing projects.
+        /// </summary>
+        /// <returns>
+        /// If <see cref="StatusCodes.Status200OK"/>, returns an <see cref="IQueryable"/> of <see cref="Models.ProjectResponse"/> containing all existing projects.
+        /// </returns>
         [HttpGet]
         [ProducesResponseType(typeof(IQueryable<Models.ProjectResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -117,6 +153,14 @@ namespace TaskManagerWebAPI.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Gets all tasks referenced to the specified project.
+        /// </summary>
+        /// <param name="projectId"><see cref="Guid"/> specifying the project to be examined</param>
+        /// <returns>
+        /// If <see cref="StatusCodes.Status200OK"/>, returns an <see cref="IQueryable"/> of <see cref="Models.ProjectResponse"/> containing all referenced tasks.
+        /// If <see cref="StatusCodes.Status404NotFound"/>, returns an error with projectId that was not found.
+        /// </returns>
         [HttpGet("{projectId}/Tasks")]
         [ProducesResponseType(typeof(IQueryable<Models.TaskResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
