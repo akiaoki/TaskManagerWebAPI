@@ -2,10 +2,13 @@
 
 namespace TaskManagerWebAPI.Repositories
 {
-    public interface IProjectRepository : IGenericRepository<Entities.Project>
-    {
+    /// <summary>
+    /// Repository containing Project entities
+    /// </summary>
+    public interface IProjectRepository : IGenericRepository<Entities.Project> 
+    {  
+    
 
-
-
+    
     }
 }
