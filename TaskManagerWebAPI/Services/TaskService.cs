@@ -5,12 +5,14 @@ using TaskManagerWebAPI.Repositories;
 
 namespace TaskManagerWebAPI.Services
 {
+    /// <inheritdoc cref="ITaskService"/>
     public class TaskService : ITaskService
     {
         private readonly IMapper _mapper;
         private readonly ITaskRepository _taskRepository;
         private readonly IProjectRepository _projectRepository;
 
+        /// <summary/>
         public TaskService(IMapper mapper, ITaskRepository taskRepository, IProjectRepository projectRepository)
         {
             _mapper = mapper;
@@ -18,6 +20,7 @@ namespace TaskManagerWebAPI.Services
             _projectRepository = projectRepository;
         }
 
+        /// <inheritdoc/>
         public async Task<Models.TaskResponse?> Create(Models.CreateTaskRequest taskRequest)
         {
             if (taskRequest.ProjectId != null)
@@ -31,6 +34,7 @@ namespace TaskManagerWebAPI.Services
             return _mapper.Map<Models.TaskResponse>(createdTask);
         }
 
+        /// <inheritdoc/>
         public async Task<Models.TaskResponse?> Get(Guid taskId)
         {
             var foundTask = await _taskRepository.Get(taskId);
@@ -39,6 +43,7 @@ namespace TaskManagerWebAPI.Services
             return _mapper.Map<Models.TaskResponse>(foundTask);
         }
 
+        /// <inheritdoc/>
         public async Task<Models.TaskResponse?> Update(Guid taskId, Models.UpdateTaskRequest taskRequest)
         {
             var response = await _taskRepository.Update(_mapper.Map<Entities.Task>(taskRequest));
@@ -47,6 +52,7 @@ namespace TaskManagerWebAPI.Services
             return _mapper.Map<Models.TaskResponse>(response);
         }
 
+        /// <inheritdoc/>
         public async Task<Models.TaskResponse?> Delete(Guid taskId)
         {
             var foundTask = await _taskRepository.Get(taskId);
@@ -56,12 +62,14 @@ namespace TaskManagerWebAPI.Services
             return _mapper.Map<Models.TaskResponse>(response);
         }
 
+        /// <inheritdoc/>
         public async Task<IQueryable<Models.TaskResponse>> GetAll()
         {
             var response = await _taskRepository.All();
             return response.ProjectTo<Models.TaskResponse>(_mapper.ConfigurationProvider);
         }
 
+        /// <inheritdoc/>
         public async Task<Tuple<Models.TaskResponse?, Models.ProjectResponse?>> AddToProject(Guid taskId, Guid projectId)
         {
             Models.TaskResponse? taskResponse = null;
@@ -87,6 +95,7 @@ namespace TaskManagerWebAPI.Services
                 _mapper.Map<Models.ProjectResponse>(foundProject));
         }
 
+        /// <inheritdoc/>
         public async Task<Models.TaskResponse?> RemoveFromProject(Guid taskId)
         {
             var foundTask = await _taskRepository.Get(taskId);
@@ -99,6 +108,7 @@ namespace TaskManagerWebAPI.Services
             return _mapper.Map<Models.TaskResponse>(foundTask);
         }
 
+        /// <inheritdoc/>
         public async Task<int> SaveChanges()
         {
             return await _taskRepository.Save();
