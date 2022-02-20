@@ -10,11 +10,13 @@ namespace TaskManagerWebAPI.Services
 
         private readonly IMapper _mapper;
         private readonly IProjectRepository _projectRepository;
+        private readonly ITaskRepository _taskRepository;
 
-        public ProjectService(IMapper mapper, IProjectRepository projectRepository)
+        public ProjectService(IMapper mapper, IProjectRepository projectRepository, ITaskRepository taskRepository)
         {
             _mapper = mapper;
             _projectRepository = projectRepository;
+            _taskRepository = taskRepository;
         }
 
         public async Task<Models.ProjectResponse> Create(Models.CreateProjectRequest projectRequest)
@@ -53,6 +55,16 @@ namespace TaskManagerWebAPI.Services
         {
             var response = await _projectRepository.All();
             return response.ProjectTo<Models.ProjectResponse>(_mapper.ConfigurationProvider);
+        }
+
+        public async Task<IQueryable<Models.TaskResponse>?> GetProjectTasks(Guid projectId)
+        {
+            var foundProject = await _projectRepository.Get(projectId);
+            if (foundProject == null)
+                return null;
+
+            var response = (await _taskRepository.All()).Where(task => task.ProjectId == projectId);
+            return response.ProjectTo<Models.TaskResponse>(_mapper.ConfigurationProvider);
         }
 
         public async Task<int> SaveChanges()

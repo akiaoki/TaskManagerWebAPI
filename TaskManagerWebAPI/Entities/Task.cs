@@ -19,3 +19,4 @@ namespace TaskManagerWebAPI.Entities
         public bool HasProject() => Project != null;
     }
 }
+ 

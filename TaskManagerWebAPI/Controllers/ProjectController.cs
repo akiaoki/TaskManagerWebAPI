@@ -106,18 +106,19 @@ namespace TaskManagerWebAPI.Controllers
             return Ok(response);
         }
 
-        //[HttpGet("{projectId}/Tasks")]
-        //[ProducesResponseType(typeof(IQueryable<Models.TaskResponse>), StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        //public async Task<ActionResult> GetTasks(Guid projectId)
-        //{
-        //    var response = await _taskService.GetProjectTasks(projectId);
-        //    if (response == null)
-        //    {
-        //        return ProjectNotFound(projectId);
-        //    }
-        //    return Ok(response);
-        //}
+        [HttpGet("{projectId}/Tasks")]
+        [ProducesResponseType(typeof(IQueryable<Models.TaskResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> GetTasks(Guid projectId)
+        {
+            //var response = await _taskService.GetProjectTasks(projectId);
+            var response = await _projectService.GetProjectTasks(projectId);
+            if (response == null)
+            {
+                return ProjectNotFound(projectId);
+            }
+            return Ok(response);
+        }
 
         private NotFoundObjectResult TaskNotFound(Guid taskId) => NotFound($"Task with the given taskId ({taskId}) was not found");
         private NotFoundObjectResult ProjectNotFound(Guid projectId) => NotFound($"Project with the given projectId ({projectId}) was not found");

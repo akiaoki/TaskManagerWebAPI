@@ -28,8 +28,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddDbContext<ProjectDbContext>(options => options.UseSqlServer(connectionString));
-builder.Services.AddDbContext<TaskDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<TaskManagerDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<ITaskService, TaskService>();

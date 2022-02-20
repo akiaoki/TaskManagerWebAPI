@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TaskManagerWebAPI.Migrations.ProjectDb
+namespace TaskManagerWebAPI.Migrations
 {
     public partial class InitialCreate : Migration
     {
@@ -26,7 +26,7 @@ namespace TaskManagerWebAPI.Migrations.ProjectDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "Task",
+                name: "Tasks",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -38,24 +38,24 @@ namespace TaskManagerWebAPI.Migrations.ProjectDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Task", x => x.Id);
+                    table.PrimaryKey("PK_Tasks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Task_Projects_ProjectId",
+                        name: "FK_Tasks_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Task_ProjectId",
-                table: "Task",
+                name: "IX_Tasks_ProjectId",
+                table: "Tasks",
                 column: "ProjectId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Task");
+                name: "Tasks");
 
             migrationBuilder.DropTable(
                 name: "Projects");

@@ -5,7 +5,7 @@ namespace TaskManagerWebAPI.Repositories
 {
     public class ProjectRepository : GenericRepository<Entities.Project>, IProjectRepository
     {
-        public ProjectRepository(ProjectDbContext dbContext) : base(dbContext)
+        public ProjectRepository(TaskManagerDbContext dbContext) : base(dbContext)
         {
 
         }

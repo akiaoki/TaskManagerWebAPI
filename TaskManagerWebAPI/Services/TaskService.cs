@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using TaskManagerWebAPI.Models;
 using TaskManagerWebAPI.Repositories;
 
 namespace TaskManagerWebAPI.Services
@@ -8,15 +9,23 @@ namespace TaskManagerWebAPI.Services
     {
         private readonly IMapper _mapper;
         private readonly ITaskRepository _taskRepository;
+        private readonly IProjectRepository _projectRepository;
 
-        public TaskService(IMapper mapper, ITaskRepository taskRepository)
+        public TaskService(IMapper mapper, ITaskRepository taskRepository, IProjectRepository projectRepository)
         {
             _mapper = mapper;
             _taskRepository = taskRepository;
+            _projectRepository = projectRepository;
         }
 
-        public async Task<Models.TaskResponse> Create(Models.CreateTaskRequest taskRequest)
+        public async Task<Models.TaskResponse?> Create(Models.CreateTaskRequest taskRequest)
         {
+            if (taskRequest.ProjectId != null)
+            {
+                if ((await _projectRepository.Get(taskRequest.ProjectId.Value)) == null) // Such projectId does not exist
+                    return null;
+            }
+
             var createdTask = await _taskRepository.Create(
                 _mapper.Map<Entities.Task>(taskRequest));
             return _mapper.Map<Models.TaskResponse>(createdTask);
@@ -57,6 +66,5 @@ namespace TaskManagerWebAPI.Services
         {
             return await _taskRepository.Save();
         }
-
     }
 }

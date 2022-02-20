@@ -9,10 +9,10 @@ using TaskManagerWebAPI.Repositories;
 
 #nullable disable
 
-namespace TaskManagerWebAPI.Migrations.ProjectDb
+namespace TaskManagerWebAPI.Migrations
 {
-    [DbContext(typeof(ProjectDbContext))]
-    [Migration("20220219132501_InitialCreate")]
+    [DbContext(typeof(TaskManagerDbContext))]
+    [Migration("20220220212754_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,21 +77,16 @@ namespace TaskManagerWebAPI.Migrations.ProjectDb
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Task");
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("TaskManagerWebAPI.Entities.Task", b =>
                 {
                     b.HasOne("TaskManagerWebAPI.Entities.Project", "Project")
-                        .WithMany("Tasks")
+                        .WithMany()
                         .HasForeignKey("ProjectId");
 
                     b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("TaskManagerWebAPI.Entities.Project", b =>
-                {
-                    b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618
         }

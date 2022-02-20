@@ -2,7 +2,7 @@
 {
     public interface ITaskService
     {
-        public Task<Models.TaskResponse> Create(Models.CreateTaskRequest taskRequest);
+        public Task<Models.TaskResponse?> Create(Models.CreateTaskRequest taskRequest);
 
         public Task<Models.TaskResponse?> Get(Guid taskId);
 

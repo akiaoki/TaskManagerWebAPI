@@ -5,7 +5,7 @@ namespace TaskManagerWebAPI.Repositories
 {
     public class TaskRepository : GenericRepository<Entities.Task>, ITaskRepository
     {
-        public TaskRepository(TaskDbContext dbContext) : base(dbContext)
+        public TaskRepository(TaskManagerDbContext dbContext) : base(dbContext)
         {
 
         }
