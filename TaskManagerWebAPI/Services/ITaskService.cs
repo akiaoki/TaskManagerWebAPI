@@ -12,6 +12,10 @@
 
         public Task<IQueryable<Models.TaskResponse>> GetAll();
 
+        public Task<Tuple<Models.TaskResponse?, Models.ProjectResponse?>> AddToProject(Guid taskId, Guid projectId);
+
+        public Task<Models.TaskResponse?> RemoveFromProject(Guid taskId);
+
         public Task<int> SaveChanges();
     }
 }

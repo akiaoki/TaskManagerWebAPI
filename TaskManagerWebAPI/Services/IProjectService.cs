@@ -13,7 +13,7 @@
 
         public Task<IQueryable<Models.ProjectResponse>> GetAll();
 
-        public Task<IQueryable<Models.TaskResponse>> GetProjectTasks(Guid projectId);
+        public Task<IQueryable<Models.TaskResponse>?> GetProjectTasks(Guid projectId);
 
         public Task<int> SaveChanges();
 

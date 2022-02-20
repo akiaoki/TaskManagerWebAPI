@@ -17,6 +17,7 @@ namespace TaskManagerWebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Models.TaskResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Create([FromBody] Models.CreateTaskRequest createTaskRequest)
         {
             if (!ModelState.IsValid)
@@ -25,6 +26,10 @@ namespace TaskManagerWebAPI.Controllers
             }
             var response = await _taskService.Create(createTaskRequest);
             await _taskService.SaveChanges();
+            if (response == null)
+            {
+                return ProjectNotFound(createTaskRequest.ProjectId.Value);
+            }
             return Created("api/v1/Task/" + response.Id, response);
         }
 
@@ -90,6 +95,40 @@ namespace TaskManagerWebAPI.Controllers
         public async Task<ActionResult> GetAll()
         {
             var response = await _taskService.GetAll();
+            return Ok(response);
+        }
+
+        [HttpGet("{taskId}/AddToProject/{projectId}")]
+        [ProducesResponseType(typeof(Models.TaskResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> AddToProject(Guid taskId, Guid projectId)
+        {
+            var response = await _taskService.AddToProject(taskId, projectId);
+
+            if (response.Item1 == null)
+            {
+                return TaskNotFound(taskId);
+            }
+            if (response.Item2 == null)
+            {
+                return ProjectNotFound(projectId);
+            }
+
+            return Ok(response.Item2);
+        }
+
+        [HttpGet("{taskId}/RemoveFromProject")]
+        [ProducesResponseType(typeof(Models.TaskResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> RemoveFromProject(Guid taskId)
+        {
+            var response = await _taskService.RemoveFromProject(taskId);
+
+            if (response == null)
+            {
+                return TaskNotFound(taskId);
+            }
+
             return Ok(response);
         }
 

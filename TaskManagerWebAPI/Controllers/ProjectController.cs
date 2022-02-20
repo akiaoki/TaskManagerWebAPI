@@ -83,9 +83,20 @@ namespace TaskManagerWebAPI.Controllers
 
         [HttpDelete("{projectId}")]
         [ProducesResponseType(typeof(Models.ProjectResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Delete(Guid projectId)
         {
+            var projectTasks = await _projectService.GetProjectTasks(projectId);
+            if (projectTasks == null)
+            {
+                return ProjectNotFound(projectId);
+            }
+            if (projectTasks.Count() != 0)
+            {
+                return BadRequest($"The specified projectId ({projectId}) has referenced tasks to it. Remove them first and try again");
+            }
+
             var response = await _projectService.Delete(projectId);
             await _projectService.SaveChanges();
 
@@ -111,7 +122,6 @@ namespace TaskManagerWebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetTasks(Guid projectId)
         {
-            //var response = await _taskService.GetProjectTasks(projectId);
             var response = await _projectService.GetProjectTasks(projectId);
             if (response == null)
             {

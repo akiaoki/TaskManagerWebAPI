@@ -62,6 +62,43 @@ namespace TaskManagerWebAPI.Services
             return response.ProjectTo<Models.TaskResponse>(_mapper.ConfigurationProvider);
         }
 
+        public async Task<Tuple<Models.TaskResponse?, Models.ProjectResponse?>> AddToProject(Guid taskId, Guid projectId)
+        {
+            Models.TaskResponse? taskResponse = null;
+            Models.ProjectResponse? projectResponse = null;
+
+            var foundTask = await _taskRepository.Get(taskId);
+            var foundProject = await _projectRepository.Get(projectId);
+            
+            if (foundTask == null || foundProject == null)
+            {
+                if (foundTask != null)
+                    taskResponse = _mapper.Map<Models.TaskResponse>(foundTask);
+                if (foundProject != null)
+                    projectResponse = _mapper.Map<Models.ProjectResponse>(foundProject);
+                return new Tuple<Models.TaskResponse?, Models.ProjectResponse?>(taskResponse, projectResponse);
+            }
+
+            foundTask.ProjectId = projectId;
+            await _taskRepository.Save();
+
+            return new Tuple<Models.TaskResponse?, Models.ProjectResponse?>(
+                _mapper.Map<Models.TaskResponse>(foundTask),
+                _mapper.Map<Models.ProjectResponse>(foundProject));
+        }
+
+        public async Task<Models.TaskResponse?> RemoveFromProject(Guid taskId)
+        {
+            var foundTask = await _taskRepository.Get(taskId);
+            if (foundTask == null)
+                return null;
+
+            foundTask.ProjectId = null;
+            await _taskRepository.Save();
+
+            return _mapper.Map<Models.TaskResponse>(foundTask);
+        }
+
         public async Task<int> SaveChanges()
         {
             return await _taskRepository.Save();
