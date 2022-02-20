@@ -2,8 +2,14 @@
 
 namespace TaskManagerWebAPI.Mapping
 {
+    /// <summary>
+    /// An AutoMapper profile for entities and models
+    /// </summary>
     public class EntityResponseMappingProfile : Profile
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public EntityResponseMappingProfile()
         {
             // Entity -> Model
