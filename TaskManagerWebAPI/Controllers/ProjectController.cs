@@ -8,14 +8,27 @@ namespace TaskManagerWebAPI.Controllers
     public class ProjectController : ControllerBase
     {
         private IProjectService _projectService;
+        private ITaskService _taskService;
 
-        public ProjectController(IProjectService projectService)
+        /// <summary>
+        /// Controller constructor
+        /// </summary>
+        public ProjectController(IProjectService projectService, ITaskService taskService)
         {
             _projectService = projectService;
+            _taskService = taskService;
         }
 
+        /// <summary>
+        /// Creates a new project.
+        /// </summary>
+        /// <param name="createProjectRequest"><see cref="Models.CreateProjectRequest"/> specifying the project to be created.</param>
+        /// <returns>
+        /// If <see cref="StatusCodes.Status201Created"/>, returns a newly created <see cref="Models.ProjectResponse"/>.<para/>
+        /// If <see cref="StatusCodes.Status400BadRequest"/>, returns an object specifying errors in the request.
+        /// </returns>
         [HttpPost]
-        [ProducesResponseType(typeof(Models.IndexedProjectResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(Models.ProjectResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Create([FromBody] Models.CreateProjectRequest createProjectRequest)
         {
@@ -25,7 +38,7 @@ namespace TaskManagerWebAPI.Controllers
             }
             var response = await _projectService.Create(createProjectRequest);
             await _projectService.SaveChanges();
-            return Created("api/v1/Projects/" + response.Id, response);
+            return Created("api/v1/Project/" + response.Id, response);
         }
 
         [HttpGet("{projectId}")]
@@ -74,6 +87,7 @@ namespace TaskManagerWebAPI.Controllers
         public async Task<ActionResult> Delete(Guid projectId)
         {
             var response = await _projectService.Delete(projectId);
+            await _projectService.SaveChanges();
 
             if (response == null)
             {
@@ -83,6 +97,29 @@ namespace TaskManagerWebAPI.Controllers
             return Ok(response);
         }
 
-        private NotFoundObjectResult ProjectNotFound(Guid projectId) => NotFound($"Project with id={projectId} was not found");
+        [HttpGet]
+        [ProducesResponseType(typeof(IQueryable<Models.ProjectResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> GetAll()
+        {
+            var response = await _projectService.GetAll();
+            return Ok(response);
+        }
+
+        //[HttpGet("{projectId}/Tasks")]
+        //[ProducesResponseType(typeof(IQueryable<Models.TaskResponse>), StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
+        //public async Task<ActionResult> GetTasks(Guid projectId)
+        //{
+        //    var response = await _taskService.GetProjectTasks(projectId);
+        //    if (response == null)
+        //    {
+        //        return ProjectNotFound(projectId);
+        //    }
+        //    return Ok(response);
+        //}
+
+        private NotFoundObjectResult TaskNotFound(Guid taskId) => NotFound($"Task with the given taskId ({taskId}) was not found");
+        private NotFoundObjectResult ProjectNotFound(Guid projectId) => NotFound($"Project with the given projectId ({projectId}) was not found");
     }
 }

@@ -11,12 +11,12 @@ namespace TaskManagerWebAPI.Mapping
             CreateMap<Entities.Task, Models.TaskResponse>();
             CreateMap<Entities.Project, Models.CreateProjectRequest>();
             CreateMap<Entities.Project, Models.ProjectResponse>();
-            CreateMap<Entities.Project, Models.IndexedProjectResponse>();
 
             // Model -> Entity
             CreateMap<Models.CreateTaskRequest, Entities.Task>();
             CreateMap<Models.CreateProjectRequest, Entities.Project>();
-
+            CreateMap<Models.UpdateTaskRequest, Entities.Task>();
+            CreateMap<Models.UpdateProjectRequest, Entities.Project>();
         }
     }
 }

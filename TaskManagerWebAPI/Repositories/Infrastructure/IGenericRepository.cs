@@ -1,4 +1,6 @@
-﻿namespace TaskManagerWebAPI.Repositories.Infrastructure
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace TaskManagerWebAPI.Repositories.Infrastructure
 {
     public interface IGenericRepository<T> where T : Entities.EntityBase
     {
@@ -13,7 +15,7 @@
 
         public Task<int> Save();
 
-        public Task<IQueryable<T>> All();
+        public Task<DbSet<T>> All();
 
     }
 }

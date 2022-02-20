@@ -43,7 +43,7 @@ namespace TaskManagerWebAPI.Repositories.Infrastructure
             return _dbContext.SaveChanges();
         }
 
-        public virtual async Task<IQueryable<T>> All()
+        public virtual async Task<DbSet<T>> All()
         {
             return _dbSet;
         }

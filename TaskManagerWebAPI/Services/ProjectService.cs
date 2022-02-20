@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using System.Diagnostics.CodeAnalysis;
-using TaskManagerWebAPI.Models;
 using TaskManagerWebAPI.Repositories;
 
 namespace TaskManagerWebAPI.Services
@@ -17,14 +17,14 @@ namespace TaskManagerWebAPI.Services
             _projectRepository = projectRepository;
         }
 
-        public async Task<Models.IndexedProjectResponse> Create(Models.CreateProjectRequest projectRequest)
+        public async Task<Models.ProjectResponse> Create(Models.CreateProjectRequest projectRequest)
         {
             var createdProject = await _projectRepository.Create(
                 _mapper.Map<Entities.Project>(projectRequest));
-            return _mapper.Map<Models.IndexedProjectResponse>(createdProject);
+            return _mapper.Map<Models.ProjectResponse>(createdProject);
         }
 
-        public async Task<ProjectResponse?> Get(Guid projectId)
+        public async Task<Models.ProjectResponse?> Get(Guid projectId)
         {
             var foundProject = await _projectRepository.Get(projectId);
             if (foundProject == null)
@@ -32,16 +32,15 @@ namespace TaskManagerWebAPI.Services
             return _mapper.Map<Models.ProjectResponse>(foundProject);
         }
 
-        public async Task<ProjectResponse?> Update(Guid projectId, UpdateProjectRequest projectRequest)
+        public async Task<Models.ProjectResponse?> Update(Guid projectId, Models.UpdateProjectRequest projectRequest)
         {
-            var foundProject = await _projectRepository.Get(projectId);
-            if (foundProject == null)
-                return null;
             var response =  await _projectRepository.Update(_mapper.Map<Entities.Project>(projectRequest));
+            if (response == null)
+                return null;
             return _mapper.Map<Models.ProjectResponse>(response);
         }
 
-        public async Task<ProjectResponse?> Delete(Guid projectId)
+        public async Task<Models.ProjectResponse?> Delete(Guid projectId)
         {
             var foundProject = await _projectRepository.Get(projectId);
             if (foundProject == null)
@@ -50,11 +49,15 @@ namespace TaskManagerWebAPI.Services
             return _mapper.Map<Models.ProjectResponse>(response);
         }
 
+        public async Task<IQueryable<Models.ProjectResponse>> GetAll()
+        {
+            var response = await _projectRepository.All();
+            return response.ProjectTo<Models.ProjectResponse>(_mapper.ConfigurationProvider);
+        }
+
         public async Task<int> SaveChanges()
         {
             return await _projectRepository.Save();
         }
-
-        
     }
 }
