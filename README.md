@@ -2,7 +2,7 @@
 A simple demo project showing the structure and usage of [ASP.NET Core with WebAPI](https://docs.microsoft.com/en-us/aspnet/core/introduction-to-aspnet-core?view=aspnetcore-6.0) and [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/)
 
 ## Prerequisites
-* [Visual Studio](https://visualstudio.microsoft.com/)
+* [Visual Studio 2022](https://visualstudio.microsoft.com/)
 * [.NET 6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 * Any supported SQL server
 * [Entity Framework Core tools](https://docs.microsoft.com/en-us/ef/core/cli/dotnet)
