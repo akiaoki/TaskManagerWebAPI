@@ -1,16 +1,13 @@
 # TaskManagerWebAPI
----
 A simple demo project showing the structure and usage of [ASP.NET Core with WebAPI](https://docs.microsoft.com/en-us/aspnet/core/introduction-to-aspnet-core?view=aspnetcore-6.0) and [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/)
 
 ## Prerequisites
----
 * [Visual Studio](https://visualstudio.microsoft.com/)
 * [.NET 6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 * Any supported SQL server
 * [Entity Framework Core tools](https://docs.microsoft.com/en-us/ef/core/cli/dotnet)
 
 ## Features
----
 * Based on [.NET 6](https://docs.microsoft.com/en-us/dotnet/core/whats-new/dotnet-6) and [AspNetCore 6](https://docs.microsoft.com/en-us/aspnet/core/release-notes/aspnetcore-6.0?view=aspnetcore-6.0) with [C# 10](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10)
 * [Entity Framework Core 6](https://docs.microsoft.com/en-us/ef/core/what-is-new/ef-core-6.0/whatsnew) ([Code-First approach](https://docs.microsoft.com/en-us/ef/ef6/modeling/code-first/workflows/new-database))
 * Extendable code with [MVC architecture](https://docs.microsoft.com/en-us/aspnet/mvc/) and [Repository pattern](https://docs.microsoft.com/en-us/aspnet/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application)
@@ -18,7 +15,6 @@ A simple demo project showing the structure and usage of [ASP.NET Core with WebA
 * [AutoMapper](https://automapper.org/) used to handle models mapping
 
 ## Building & Running
----
 * Clone the repository
 
 ```
@@ -43,7 +39,6 @@ dotnet run
 * Now it can be accessed through ```localhost:5201/swagger/index.html```
 
 ## API endpoints
----
 **POST Create a new project**
 ```http://localhost:5201/api/v1/Project```
 
@@ -84,7 +79,6 @@ dotnet run
 ```http://localhost:5201/api/v1/Task/{taskId}/RemoveFromProject```
 
 ## License
----
 Copyright 2022 Aki Aoki
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
