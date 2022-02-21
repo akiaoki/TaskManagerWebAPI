@@ -10,7 +10,7 @@ A simple demo project showing the structure and usage of [ASP.NET Core with WebA
 ## Features
 * Based on [.NET 6](https://docs.microsoft.com/en-us/dotnet/core/whats-new/dotnet-6) and [AspNetCore 6](https://docs.microsoft.com/en-us/aspnet/core/release-notes/aspnetcore-6.0?view=aspnetcore-6.0) with [C# 10](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10)
 * [Entity Framework Core 6](https://docs.microsoft.com/en-us/ef/core/what-is-new/ef-core-6.0/whatsnew) ([Code-First approach](https://docs.microsoft.com/en-us/ef/ef6/modeling/code-first/workflows/new-database))
-* Extendable code with [MVC architecture](https://docs.microsoft.com/en-us/aspnet/mvc/) and [Repository pattern](https://docs.microsoft.com/en-us/aspnet/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application)
+* Extendable code with [MVC (MVCS) architecture](https://docs.microsoft.com/en-us/aspnet/mvc/) and [Repository pattern](https://docs.microsoft.com/en-us/aspnet/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application)
 * [Swagger](https://swagger.io/) for development
 * [AutoMapper](https://automapper.org/) used to handle models mapping
 
