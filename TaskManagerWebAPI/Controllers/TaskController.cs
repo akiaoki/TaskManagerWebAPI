@@ -156,7 +156,7 @@ namespace TaskManagerWebAPI.Controllers
         /// If <see cref="StatusCodes.Status404NotFound"/>, returns an error with taskId or projectId that was not found.
         /// </returns>
         /// <remarks>Note that in case of both taskId and projectId not be found, firstly taskId will be returned and only projectId later.</remarks>
-        [HttpGet("{taskId}/AddToProject/{projectId}")]
+        [HttpPut("{taskId}/AddToProject/{projectId}")]
         [ProducesResponseType(typeof(Models.TaskResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> AddToProject(Guid taskId, Guid projectId)
@@ -183,7 +183,7 @@ namespace TaskManagerWebAPI.Controllers
         /// If <see cref="StatusCodes.Status200OK"/>, returns an updated <see cref="Models.TaskResponse"/>.<para/>
         /// If <see cref="StatusCodes.Status404NotFound"/>, returns an error with taskId that was not found.
         /// </returns>
-        [HttpGet("{taskId}/RemoveFromProject")]
+        [HttpPost("{taskId}/RemoveFromProject")]
         [ProducesResponseType(typeof(Models.TaskResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> RemoveFromProject(Guid taskId)
