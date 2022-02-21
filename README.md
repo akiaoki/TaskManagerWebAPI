@@ -26,7 +26,7 @@ git clone https://github.com/akikodev/TaskManagerWebAPI.git
 ```
 
 * Open the solution file in Visual Studio
-* Configure database  ```DefaultConnection``` inside ```appsetings.json```
+* Configure database  ```DefaultConnection``` inside ```appsettings.json```
 * Add [migrations](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/?tabs=dotnet-core-cli) and update database using Terminal window
 
 ```
